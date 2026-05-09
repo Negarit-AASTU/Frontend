@@ -1,14 +1,17 @@
 "use client";
 
 import { Card, CardContent } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
 import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useEffect, useState, use } from "react";
 import { useAuth } from "@/components/auth/auth-provider";
 import type { Job } from "@/lib/api/types";
 import { ApiError } from "@/lib/api/types";
+import { EditJobDialog } from "@/components/recruiter/edit-job-dialog";
 
 export default function JobDetailPage({ params }: { params: { id: string } }) {
+  const { id } = use(params);
   const { api } = useAuth();
   const [job, setJob] = useState<Job | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -17,7 +20,7 @@ export default function JobDetailPage({ params }: { params: { id: string } }) {
     let cancelled = false;
     (async () => {
       try {
-        const j = await api.jobs.get(params.id);
+        const j = await api.jobs.get(id);
         if (cancelled) return;
         setJob(j);
         setError(null);
@@ -29,7 +32,7 @@ export default function JobDetailPage({ params }: { params: { id: string } }) {
     return () => {
       cancelled = true;
     };
-  }, [api, params.id]);
+  }, [api, id]);
 
   return (
     <div className="max-w-6xl mx-auto">
@@ -55,6 +58,22 @@ export default function JobDetailPage({ params }: { params: { id: string } }) {
             </p>
           </div>
         </div>
+
+        {job ? (
+          <EditJobDialog
+            job={job}
+            onSaved={setJob}
+            trigger={
+              <Button className="font-bold text-[#2c1d8c] bg-white hover:bg-gray-100 rounded-lg px-8">
+                Edit Job
+              </Button>
+            }
+          />
+        ) : (
+          <Button disabled className="font-bold text-[#2c1d8c] bg-white hover:bg-gray-100 rounded-lg px-8">
+            Edit Job
+          </Button>
+        )}
       </div>
 
       {error ? <div className="text-sm text-red-600 bg-red-50 border border-red-100 rounded-lg p-3 mb-6">{error}</div> : null}

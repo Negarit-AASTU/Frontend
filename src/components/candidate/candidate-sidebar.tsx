@@ -2,23 +2,22 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Home, Briefcase, User, Settings, HelpCircle, CreditCard } from 'lucide-react';
+import { Home, Briefcase, User, Settings, HelpCircle, BookOpen } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 
 function classNames(...parts: Array<string | false | null | undefined>) {
   return parts.filter(Boolean).join(' ');
 }
 
-export function RecruiterSidebarLinks() {
+export function CandidateSidebarLinks() {
   const pathname = usePathname();
 
-  // compute single best active href (longest matching prefix or exact match)
   const linkHrefs = [
-    '/recruiter',
-    '/recruiter/jobs',
-    '/recruiter/profile',
-    '/recruiter/settings',
-    '/recruiter/help',
+    '/candidate',
+    '/candidate/jobs',
+    '/candidate/profile',
+    '/candidate/settings',
+    '/candidate/help',
   ];
 
   let activeHref = '';
@@ -58,36 +57,37 @@ export function RecruiterSidebarLinks() {
         <div>
           <h3 className="text-xs font-medium text-gray-400 mb-4 px-2">Main Menu</h3>
           <nav className="space-y-1">
-            <LinkItem href="/recruiter" icon={<Home size={18} />}>Dashboard</LinkItem>
-            <LinkItem href="/recruiter/jobs" icon={<Briefcase size={18} />}>Jobs</LinkItem>
-            <LinkItem href="/recruiter/profile" icon={<User size={18} />}>Profile</LinkItem>
+            <LinkItem href="/candidate" icon={<Home size={18} />}>Dashboard</LinkItem>
+            <LinkItem href="/candidate/jobs" icon={<Briefcase size={18} />}>Jobs</LinkItem>
+            <LinkItem href="/candidate/profile" icon={<User size={18} />}>Profile</LinkItem>
           </nav>
         </div>
 
         <div>
-          <h3 className="text-xs font-medium text-gray-400 mb-4 px-2">Settings & Support</h3>
+          <h3 className="text-xs font-medium text-gray-400 mb-4 px-2">Support</h3>
           <nav className="space-y-1">
-            <LinkItem href="/recruiter/settings" icon={<Settings size={18} />}>Settings</LinkItem>
-            <LinkItem href="#" icon={<CreditCard size={18} />}>Subscription</LinkItem>
-            <LinkItem href="/recruiter/help" icon={<HelpCircle size={18} />}>Help Center</LinkItem>
+            <LinkItem href="/candidate/settings" icon={<Settings size={18} />}>Settings</LinkItem>
+            <LinkItem href="/candidate/help" icon={<HelpCircle size={18} />}>Help Center</LinkItem>
           </nav>
         </div>
       </div>
 
       <div className="px-4 pb-6 mt-auto">
-        <div className="bg-[#4238b8] rounded-xl p-4 text-white text-center shadow-sm">
-          <h4 className="font-bold text-sm mb-1">Become Pro Access</h4>
-          <p className="text-xs text-indigo-200 mb-4 leading-tight">Try your experience for using more features</p>
-          <Button className="w-full bg-white text-[#4238b8] hover:bg-gray-50 font-bold rounded-lg shadow-sm">
-            Upgrade Pro
-          </Button>
+        <div className="bg-linear-to-br from-emerald-600 to-teal-600 rounded-xl p-4 text-white text-center shadow-sm">
+          <h4 className="font-bold text-sm mb-1">Complete Your Profile</h4>
+          <p className="text-xs text-emerald-100 mb-4 leading-tight">Increase match score with recruiters</p>
+          <Link href="/candidate/profile" className="inline-block w-full">
+            <Button className="w-full bg-white text-emerald-600 hover:bg-emerald-50 font-bold rounded-lg shadow-sm">
+              Finish Profile
+            </Button>
+          </Link>
         </div>
       </div>
     </div>
   );
 }
 
-export function RecruiterSidebar() {
+export function CandidateSidebar() {
   return (
     <aside className="w-64 bg-white border-r border-gray-100 hidden md:flex flex-col h-screen sticky top-0">
       <div className="p-4 flex items-center justify-between border-b border-transparent h-16">
@@ -96,7 +96,7 @@ export function RecruiterSidebar() {
           <span className="text-xl font-bold">Negarit</span>
         </div>
       </div>
-      <RecruiterSidebarLinks />
+      <CandidateSidebarLinks />
     </aside>
   );
 }

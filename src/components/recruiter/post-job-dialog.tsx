@@ -5,12 +5,12 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { ReactNode, useMemo, useState } from "react";
+import { useMemo, useState, type ReactNode } from "react";
 import { useAuth } from "@/components/auth/auth-provider";
 import { ApiError } from "@/lib/api/types";
 import type { JobType } from "@/lib/api/types";
 
-export function PostJobDialog({ trigger }: { trigger: ReactNode }) {
+export function PostJobDialog({ trigger, onSuccess }: { trigger: ReactNode; onSuccess?: () => void }) {
   const { api } = useAuth();
   const [step, setStep] = useState(1);
   const [open, setOpen] = useState(false);
@@ -81,6 +81,7 @@ export function PostJobDialog({ trigger }: { trigger: ReactNode }) {
         salaryMax: salaryMax ? Number(salaryMax) : undefined,
         deadline: deadline ? new Date(deadline).toISOString() : undefined,
       });
+      onSuccess?.();
       setOpen(false);
     } catch (e) {
       setError(e instanceof ApiError ? e.message : "Failed to publish job.");
@@ -91,8 +92,8 @@ export function PostJobDialog({ trigger }: { trigger: ReactNode }) {
 
   return (
     <Dialog open={open} onOpenChange={handleOpenChange}>
-      <DialogTrigger>{trigger}</DialogTrigger>
-      <DialogContent className="sm:max-w-[600px] border-none shadow-xl bg-white rounded-xl overflow-hidden p-0">
+      <DialogTrigger render={trigger} />
+      <DialogContent className="sm:max-w-150 border-none shadow-xl bg-white rounded-xl overflow-hidden p-0">
         <DialogHeader className="px-6 py-5 border-b border-gray-100">
           <DialogTitle className="text-xl font-bold text-gray-900">Post a Job</DialogTitle>
         </DialogHeader>
@@ -171,7 +172,7 @@ export function PostJobDialog({ trigger }: { trigger: ReactNode }) {
               <div className="space-y-2">
                 <label className="text-sm font-semibold text-gray-700">Job Description <span className="text-red-500">*</span></label>
                 <div className="relative">
-                  <Textarea value={description} onChange={(e) => setDescription(e.target.value)} placeholder="Describe the role..." className="rounded-lg border-gray-200 min-h-[140px] resize-none" />
+                  <Textarea value={description} onChange={(e) => setDescription(e.target.value)} placeholder="Describe the role..." className="rounded-lg border-gray-200 min-h-35 resize-none" />
                 </div>
               </div>
               <div className="space-y-2">
@@ -188,7 +189,7 @@ export function PostJobDialog({ trigger }: { trigger: ReactNode }) {
                   value={requirementsRaw}
                   onChange={(e) => setRequirementsRaw(e.target.value)}
                   placeholder={"One per line, e.g.\nBachelor degree in CS\n3+ years experience"}
-                  className="rounded-lg border-gray-200 min-h-[100px] resize-none"
+                  className="rounded-lg border-gray-200 min-h-25 resize-none"
                 />
               </div>
               <div className="space-y-2">

@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -76,12 +77,7 @@ export default function AuthPage() {
   return (
     <div className="w-full max-w-md">
       <div className="w-full flex justify-center mb-8">
-        <div className="flex items-center space-x-2">
-          <div className="bg-blue-600 p-2 rounded-md">
-            <span className="text-white text-xl font-bold">Negarit</span>
-          </div>
-          <span className="text-2xl font-bold">Negarit</span>
-        </div>
+        <Image src="/logo.png" alt="Negarit" width={210} height={60} priority className="h-14 w-auto object-contain" />
       </div>
 
       <Card className="w-full rounded-2xl shadow-sm border-gray-100 p-4">

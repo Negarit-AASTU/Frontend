@@ -16,14 +16,15 @@ export function RequireRole({
 }) {
   const router = useRouter();
   const pathname = usePathname();
-  const { isAuthed, user } = useAuth();
+  const { isAuthed, isReady, user } = useAuth();
 
   const problem = useMemo(() => {
+    if (!isReady) return null;
     if (!isAuthed || !user) return "not_authed";
     if (user.role !== role) return "wrong_role";
     if (requireVerified && !user.isVerified) return "not_verified";
     return null;
-  }, [isAuthed, role, requireVerified, user]);
+  }, [isAuthed, isReady, role, requireVerified, user]);
 
   useEffect(() => {
     if (!problem) return;
@@ -34,7 +35,7 @@ export function RequireRole({
     router.replace(roleHome(user?.role ?? "APPLICANT"));
   }, [problem, pathname, router, user?.role]);
 
-  if (problem) return null;
+  if (!isReady || problem) return null;
   return <>{children}</>;
 }
 

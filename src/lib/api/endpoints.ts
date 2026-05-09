@@ -13,6 +13,19 @@ import type { createHttpClient } from "./http";
 
 type Http = ReturnType<typeof createHttpClient>;
 
+export type JobUpdateBody = {
+  title: string;
+  description: string;
+  location: string;
+  type: string;
+  category?: string;
+  requirements: string[];
+  requiredSkills: string[];
+  salaryMin?: number;
+  salaryMax?: number;
+  deadline?: string;
+};
+
 export function createApi(http: Http) {
   return {
     auth: {
@@ -100,7 +113,7 @@ export function createApi(http: Http) {
         salaryMax?: number;
         deadline?: string;
       }) => http.request<Job>("/jobs", { method: "POST", body: JSON.stringify(body) }),
-      update: (jobId: string, body: Partial<Job>) =>
+      update: (jobId: string, body: JobUpdateBody) =>
         http.request<Job>(`/jobs/${jobId}`, { method: "PATCH", body: JSON.stringify(body) }),
       remove: (jobId: string) => http.request<void>(`/jobs/${jobId}`, { method: "DELETE" }),
     },

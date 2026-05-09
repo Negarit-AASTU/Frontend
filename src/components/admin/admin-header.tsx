@@ -1,9 +1,14 @@
+"use client";
+
 import { Search, Bell, Menu } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Sheet, SheetContent, SheetTrigger, SheetTitle } from '@/components/ui/sheet';
 import { AdminSidebarLinks } from '@/components/admin/admin-sidebar';
 import { ReactNode } from 'react';
+import { Button } from '@/components/ui/button';
+import { useAuth } from '@/components/auth/auth-provider';
+import { useRouter } from 'next/navigation';
 
 interface HeaderProps {
   userName?: string;
@@ -18,6 +23,14 @@ export function AdminHeader({
   avatarUrl = "https://i.pravatar.cc/150?u=a042581f4e29026704d",
   mobileSidebarLinks 
 }: HeaderProps) {
+  const { logout } = useAuth();
+  const router = useRouter();
+
+  async function onLogout() {
+    await logout();
+    router.replace('/');
+  }
+
   return (
     <header className="h-16 border-b border-gray-100 bg-white flex items-center justify-between px-4 md:px-6 sticky top-0 z-30">
       <div className="flex items-center flex-1 space-x-4">
@@ -51,6 +64,9 @@ export function AdminHeader({
       </div>
       
       <div className="flex items-center space-x-4 ml-4">
+        <Button variant="outline" size="sm" onClick={() => void onLogout()}>
+          Logout
+        </Button>
         <button className="relative p-2 text-gray-400 hover:text-gray-600 transition border border-gray-100 rounded-full">
           <Bell size={18} />
           <span className="absolute top-1.5 right-1.5 w-2 h-2 bg-red-500 rounded-full border-2 border-white"></span>
